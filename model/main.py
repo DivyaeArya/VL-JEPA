@@ -1,17 +1,4 @@
-
-# Copyright 2025 J Joe
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Pytorch Implementation of VL-JEPA model and training logic, inspired from MLX verison.
 
 import os
 import glob
@@ -54,8 +41,6 @@ class DoRALinear(nn.Module):
         self.linear = nn.Linear(input_dims, output_dims, bias=bias)
         self.dropout = nn.Dropout(p=dropout)
         self.scale = scale * (alpha / r)
-        
-        # LoRA weights
         init_scale = 1 / math.sqrt(input_dims)
         self.lora_a = nn.Parameter(torch.empty(r, input_dims))
         nn.init.uniform_(self.lora_a, -init_scale, init_scale)
