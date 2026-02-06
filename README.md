@@ -1,15 +1,19 @@
-# VL-JEPA (PyTorch)
+# Biomedical VL-JEPA (PyTorch)
 
-PyTorch reimplementation of **VL-JEPA**, translated from the original MLX code:  
-https://github.com/JosefAlbers/VL-JEPA/tree/main
+A PyTorch implementation of **VL-JEPA** specialized for biomedical domains, using **BioBERT** and a TinyViT (POW) for now need to replace with **VMamba** Backbone.
 
-Based on the **VL-JEPA paper** and **JEPA (LeCun et al.)** ideas.  
-Uses **PaLI-Gemma** as the vision–language backbone.
+## Architecture
+- **Text Encoder**: Frozen `dmis-lab/biobert-base-cased-v1.1`.
+- **Vision Encoder**: TinyViT for now need to replace with VMamba Backbone.
+- **Predictor**: Frozen BioBERT with **DoRA** adapters (Rank 16).
 
-### Extras added
-- [x] PyTorch version (from MLX)
-- [x] PaLI-Gemma integration
-- [x] JEPA-style masking
-  - [x] masked context encoder
-  - [x] unmasked target encoder
-  - [x] stop-gradient on targets
+## Training Logic
+Uses Joint Embedding Predictive Architecture (JEPA) with a **Dual Loss**:
+1.  **Reconstruction (MSE)**: Predictor reconstructs latent features of masked image patches (~70% masking).
+2.  **Global Alignment (InfoNCE)**: Aligns global vision features with BioBERT text embeddings.
+
+## Usage
+```bash
+pip install -e .
+python model/main.py
+```
